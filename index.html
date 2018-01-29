@@ -1,0 +1,107 @@
+<script>
+
+  // Get the computer's selection
+  function getComputerSelection() {
+    // Create array with rock, paper, scissors as items
+    const rps = ['rock', 'paper', 'scissors'];
+    // Get a random number b/n 0 and 2
+    const choice = Math.floor(Math.random() * 3);
+    // Return rps array with random item
+    return(rps[choice]);
+  }
+
+  // Get the player's selection
+  function getPlayerSelection(err_message) {
+    return prompt( (err_message || '' ) + 'Choose rock, paper, or scissors').toLowerCase();
+  }
+
+  function playRound(p, c, pScore, cScore) {
+    // Create outcome object
+    const outcome = {};
+    outcome.message = `Computer chose: ${c}, you chose ${p}. `;
+
+    // If both select the same, set message and retun outcome
+    if (p === c) {
+      outcome.message += `Tie! You both choose ${p}`;
+      return outcome;
+    }
+
+    // If both select different, run the logic
+    switch (p) {
+      case 'rock' :
+        if (c === 'paper') {
+          outcome.message += 'You Lose! Paper beats Rock';
+          outcome.winner = 'c';
+        } else if (c === 'scissors') {
+          outcome.message += 'You Win! Rock beats Scissors';
+          outcome.winner = 'p';
+        }
+        break;
+      case 'paper' :
+        if (c === 'rock') {
+          outcome.message += 'You Win! Paper beats Rock';
+          outcome.winner = 'p';
+        } else if (c === 'scissors') {
+          outcome.message += 'You Lose! Scissors beat Paper';
+          outcome.winner = 'c';
+        }
+        break;
+      case 'scissors' :
+        if (c === 'rock') {
+          outcome.message += 'You Lose! Rock beat Scissors';
+          outcome.winner = 'c';
+        } else if (c === 'paper') {
+          outcome.message += 'You Win! Scissors beat Paper';
+          outcome.winner = 'p';
+        }
+        break;
+      default :
+        outcome.message += `Invalid choice. You chose ${p}. Please try again!`;
+    }
+
+    // Return the result
+    return outcome;
+  }
+
+  function game() {
+    let cScore = 0,
+        pScore = 0,
+        rounds = 3,
+        outcome;
+    
+
+    // Loop through gameplay for number of rounds equal to rounds var
+    for (let i = 0; i < rounds; i++) {
+      let playerSelection = getPlayerSelection();
+      let computerSelection = getComputerSelection();
+
+      // Play the round
+      outcome = playRound(playerSelection, computerSelection);
+
+      // Show user the message to let them know outcome
+      console.log(outcome.message);
+      
+      // Give a point to the winner
+      if (outcome.winner === 'p') {
+        pScore++;
+      } else if (outcome.winner === 'c') {
+        cScore++;
+      }
+
+    }
+
+    // For loop is done, rounds are done. Determine winner or tie
+    if (cScore > pScore) {
+        console.log('Oh Man! You Lost!');
+      } else if (cScore === pScore) {
+        console.log('Whaaaa? You tied!');
+      } else {
+        console.log('Whoo! You Won!');
+      }
+
+  }
+
+// Run the game!
+game();
+
+</script>
